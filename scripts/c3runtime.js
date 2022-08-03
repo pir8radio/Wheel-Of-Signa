@@ -3740,6 +3740,20 @@ d},Unpin(){this._SetPinInst(null);this._mode="";this._propSet.clear();this._pinI
 }
 
 {
+'use strict';{const C3=self.C3;C3.Behaviors.Fade=class FadeBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Behaviors.Fade.Type=class FadeType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}}}
+{const C3=self.C3;const FADE_IN_TIME=0;const WAIT_TIME=1;const FADE_OUT_TIME=2;const DESTROY=3;const ACTIVE_AT_START=4;C3.Behaviors.Fade.Instance=class FadeInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);this._fadeInTime=0;this._waitTime=0;this._fadeOutTime=0;this._destroy=true;this._activeAtStart=true;this._setMaxOpacity=false;this._stage=0;this._stageTime=C3.New(C3.KahanSum);this._maxOpacity=this._inst.GetWorldInfo().GetOpacity()||1;if(properties){this._fadeInTime=
+properties[FADE_IN_TIME];this._waitTime=properties[WAIT_TIME];this._fadeOutTime=properties[FADE_OUT_TIME];this._destroy=!!properties[DESTROY];this._activeAtStart=!!properties[ACTIVE_AT_START];this._stage=this._activeAtStart?0:3}if(this._activeAtStart)if(this._fadeInTime===0){this._stage=1;if(this._waitTime===0)this._stage=2}else{this._inst.GetWorldInfo().SetOpacity(0);this._runtime.UpdateRender()}this._StartTicking()}Release(){super.Release()}SaveToJson(){return{"fit":this._fadeInTime,"wt":this._waitTime,
+"fot":this._fadeOutTime,"d":this._destroy,"s":this._stage,"st":this._stageTime.Get(),"mo":this._maxOpacity}}LoadFromJson(o){this._fadeInTime=o["fit"];this._waitTime=o["wt"];this._fadeOutTime=o["fot"];this._destroy=o["d"];this._stage=o["s"];this._stageTime.Set(o["st"]);this._maxOpacity=o["mo"]}Tick(){const dt=this._runtime.GetDt(this._inst);this._stageTime.Add(dt);const wi=this._inst.GetWorldInfo();if(this._stage===0){wi.SetOpacity(this._stageTime.Get()/this._fadeInTime*this._maxOpacity);this._runtime.UpdateRender();
+if(wi.GetOpacity()>=this._maxOpacity){wi.SetOpacity(this._maxOpacity);this._stage=1;this._stageTime.Reset();this.Trigger(C3.Behaviors.Fade.Cnds.OnFadeInEnd)}}if(this._stage===1)if(this._stageTime.Get()>=this._waitTime){this._stage=2;this._stageTime.Reset();this.Trigger(C3.Behaviors.Fade.Cnds.OnWaitEnd)}if(this._stage===2)if(this._fadeOutTime!==0){wi.SetOpacity(this._maxOpacity-this._stageTime.Get()/this._fadeOutTime*this._maxOpacity);this._runtime.UpdateRender();if(wi.GetOpacity()<=0){this._stage=
+3;this._stageTime.Reset();this.Trigger(C3.Behaviors.Fade.Cnds.OnFadeOutEnd);if(this._destroy)this._runtime.DestroyInstance(this._inst)}}}Start(){this._stage=0;this._stageTime.Reset();if(this._fadeInTime===0){this._stage=1;if(this._waitTime===0)this._stage=2}else{this._inst.GetWorldInfo().SetOpacity(0);this._runtime.UpdateRender()}}GetPropertyValueByIndex(index){switch(index){case FADE_IN_TIME:return this._fadeInTime;case WAIT_TIME:return this._waitTime;case FADE_OUT_TIME:return this._fadeOutTime;
+case DESTROY:return this._destroy}}SetPropertyValueByIndex(index,value){switch(index){case FADE_IN_TIME:this._fadeInTime=value;break;case WAIT_TIME:this._waitTime=value;break;case FADE_OUT_TIME:this._fadeOutTime=value;break;case DESTROY:this._destroy=!!value;break}}GetDebuggerProperties(){const prefix="behaviors.fade";return[{title:"$"+this.GetBehaviorType().GetName(),properties:[{name:prefix+".properties.fade-in-time.name",value:this._fadeInTime,onedit:v=>this._fadeInTime=v},{name:prefix+".properties.wait-time.name",
+value:this._waitTime,onedit:v=>this._waitTime=v},{name:prefix+".properties.fade-out-time.name",value:this._fadeOutTime,onedit:v=>this._fadeOutTime=v},{name:prefix+".debugger.stage",value:[prefix+".debugger."+["fade-in","wait","fade-out","done"][this._stage]]}]}]}}}{const C3=self.C3;C3.Behaviors.Fade.Cnds={OnFadeOutEnd(){return true},OnFadeInEnd(){return true},OnWaitEnd(){return true}}}
+{const C3=self.C3;C3.Behaviors.Fade.Acts={StartFade(){if(!this._activeAtStart&&!this._setMaxOpacity){this._maxOpacity=this._inst.GetWorldInfo().GetOpacity()||1;this._setMaxOpacity=true}if(this._stage===3)this.Start()},RestartFade(){this.Start()},SetFadeInTime(t){if(t<0)t=0;this._fadeInTime=t},SetWaitTime(t){if(t<0)t=0;this._waitTime=t},SetFadeOutTime(t){if(t<0)t=0;this._fadeOutTime=t}}}
+{const C3=self.C3;C3.Behaviors.Fade.Exps={FadeInTime(){return this._fadeInTime},WaitTime(){return this._waitTime},FadeOutTime(){return this._fadeOutTime}}};
+
+}
+
+{
 const C3 = self.C3;
 self.C3_GetObjectRefTable = function () {
 	return [
@@ -3753,6 +3767,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Audio,
 		C3.Plugins.AJAX,
 		C3.Plugins.Json,
+		C3.Behaviors.Fade,
 		C3.Plugins.System.Cnds.IsGroupActive,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.System.Cnds.PickAll,
@@ -3767,15 +3782,18 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Exps.float,
 		C3.Plugins.Json.Exps.Get,
 		C3.Plugins.System.Acts.Wait,
+		C3.Plugins.System.Cnds.Compare,
+		C3.Plugins.Text.Exps.Text,
+		C3.Plugins.Sprite.Acts.SetVisible,
+		C3.Plugins.Audio.Acts.Play,
+		C3.Behaviors.Fade.Acts.RestartFade,
+		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.Json.Cnds.ForEach,
 		C3.Plugins.Text.Acts.AppendText,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.System.Cnds.CompareVar,
-		C3.Plugins.Sprite.Acts.SetVisible,
-		C3.Plugins.Audio.Acts.Play,
 		C3.Plugins.Sprite.Acts.SetY,
 		C3.Plugins.Sprite.Exps.Y,
-		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.Sprite.Acts.SetAnim,
 		C3.Plugins.Sprite.Acts.SetAnimSpeed,
 		C3.Behaviors.Rotate.Acts.SetSpeed,
@@ -3827,9 +3845,13 @@ self.C3_JsPropNameTable = [
 	{signum: 0},
 	{JSONtxs: 0},
 	{resultOne: 0},
+	{outOForder: 0},
+	{Fade: 0},
+	{moneybag: 0},
 	{GoSpin: 0},
 	{money: 0},
 	{contractData: 0},
+	{ResultsChangeCheck: 0},
 	{txsJSON: 0},
 	{prizeAux1: 0},
 	{prizeAux2: 0}
@@ -3935,7 +3957,7 @@ function or(l, r)
 self.C3_ExpressionFuncs = [
 		() => "Main",
 		() => "contractData",
-		() => "https://signawallet.notallmine.net/burst?requestType=getAccount&account=S-GJ9C-T2EF-C82A-8EZPD",
+		() => "https://europe3.testnet.signum.network/burst?requestType=getAccount&account=TS-67ZK-WZXH-PZA8-CKEDQ",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0();
@@ -3947,20 +3969,32 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const n1 = p._GetNode(1);
-			return () => and("𝖲̷ ", (Math.round(((f0(n1.ExpObject("balanceNQT")) / 100000000) * 10000)) / 10000));
+			return () => and("𝖲̷ ", (Math.round(((f0(n1.ExpObject("balanceNQT")) / 100000000) * 1000)) / 1000));
 		},
 		() => "txsData",
-		() => "https://signawallet.notallmine.net/burst?requestType=getAccountTransactions&account=S-GJ9C-T2EF-C82A-8EZPD&type=0&subtype=0&firstIndex=0&lastIndex=4",
+		() => "https://europe3.testnet.signum.network/burst?requestType=getAccountTransactions&account=TS-67ZK-WZXH-PZA8-CKEDQ&type=0&subtype=0&firstIndex=0&lastIndex=4",
 		() => "",
 		() => 30,
+		() => "EMPTY",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject();
+		},
+		() => 0,
+		() => 4,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => (Math.round(((f0(n1.ExpObject("balanceNQT")) / 100000000) * 1000)) / 1000);
+		},
+		() => 10,
+		() => 1,
 		() => "transactions",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const n1 = p._GetNode(1);
-			return () => (and("𝖲̷ ", ((f0(n1.ExpObject(".amountNQT")) / 100000000) * (10000 / 10000))) + "\n");
+			return () => (and("𝖲̷ ", ((f0(n1.ExpObject(".amountNQT")) / 100000000) * (1000 / 1000))) + "\n");
 		},
-		() => 1,
-		() => 0,
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() + 6);
@@ -3993,7 +4027,6 @@ self.C3_ExpressionFuncs = [
 			return () => n0.ExpInstVar();
 		},
 		() => "Blink",
-		() => 10,
 		() => 0.75,
 		p => {
 			const n0 = p._GetNode(0);
