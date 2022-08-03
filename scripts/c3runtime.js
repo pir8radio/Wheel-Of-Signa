@@ -3957,7 +3957,7 @@ function or(l, r)
 self.C3_ExpressionFuncs = [
 		() => "Main",
 		() => "contractData",
-		() => "https://europe3.testnet.signum.network/burst?requestType=getAccount&account=TS-67ZK-WZXH-PZA8-CKEDQ",
+		() => "https://europe3.testnet.signum.network/burst?requestType=getAccount&account=TS-4R8Z-R2PF-QSNQ-27VQM",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0();
@@ -3972,7 +3972,7 @@ self.C3_ExpressionFuncs = [
 			return () => and("𝖲̷ ", (Math.round(((f0(n1.ExpObject("balanceNQT")) / 100000000) * 1000)) / 1000));
 		},
 		() => "txsData",
-		() => "https://europe3.testnet.signum.network/burst?requestType=getAccountTransactions&account=TS-67ZK-WZXH-PZA8-CKEDQ&type=0&subtype=0&firstIndex=0&lastIndex=4",
+		() => "https://europe3.testnet.signum.network/burst?requestType=getAccountTransactions&account=TS-4R8Z-R2PF-QSNQ-27VQM&type=0&subtype=0&firstIndex=0&lastIndex=4",
 		() => "",
 		() => 30,
 		() => "EMPTY",
