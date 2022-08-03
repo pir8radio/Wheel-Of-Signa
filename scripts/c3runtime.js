@@ -3972,7 +3972,7 @@ self.C3_ExpressionFuncs = [
 			return () => and("𝖲̷ ", (Math.round(((f0(n1.ExpObject("balanceNQT")) / 100000000) * 1000)) / 1000));
 		},
 		() => "txsData",
-		() => "https://europe3.testnet.signum.network/burst?requestType=getAccountTransactions&account=TS-4R8Z-R2PF-QSNQ-27VQM&type=0&subtype=0&firstIndex=0&lastIndex=4",
+		() => "https://europe3.testnet.signum.network/burst?requestType=getAccountTransactions&account=TS-4R8Z-R2PF-QSNQ-27VQM&type=22&subtype=1&firstIndex=0&lastIndex=4",
 		() => "",
 		() => 30,
 		() => "EMPTY",
