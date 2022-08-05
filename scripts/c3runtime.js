@@ -3936,6 +3936,9 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Function.Cnds.OnFunction,
 		C3.Plugins.Audio.Acts.SetSilent,
 		C3.Plugins.Audio.Cnds.IsSilent,
+		C3.Plugins.Browser.Cnds.IsFullscreen,
+		C3.Plugins.Browser.Acts.CancelFullScreen,
+		C3.Plugins.Browser.Acts.RequestFullScreen,
 		C3.Plugins.Sprite.Acts.SetY,
 		C3.Plugins.Sprite.Exps.Y,
 		C3.Plugins.System.Acts.GoToLayoutByName
@@ -3988,6 +3991,7 @@ self.C3_JsPropNameTable = [
 	{burnHTML: 0},
 	{ucouldwin: 0},
 	{Text: 0},
+	{btn_fullscrn: 0},
 	{GoSpin: 0},
 	{money: 0},
 	{contractData: 0},
@@ -4171,6 +4175,7 @@ self.C3_ExpressionFuncs = [
 		},
 		() => 15,
 		() => "Edit and Sound",
+		() => "fullScreen",
 		() => "Sound",
 		p => {
 			const n0 = p._GetNode(0);
