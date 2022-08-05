@@ -1,12 +1,13 @@
 #spin {
 font-size:2vw;
 color: white;
+font-family: Georgia, serif;
 font-weight: 900;
 padding: 10px 10px;
 border-radius: 15px;
 background-size: cover;
 background-color: #FFCC00;
-border: .5vw solid #CDA400;
+border: .5vh solid #CDA400;
 }
 
 #spin:active {
@@ -15,13 +16,22 @@ background-color: #8A8A8A;
 
 #output {
 color: white;
+font-family: Georgia, serif;
 font-size:1.5vw;
 font-weight: 900;
 margin-top: 5px;
 }
 
 #output2 {
-font-size:3vw;
+font-family: Georgia, serif;
+font-size:2.2vw;
 font-weight: 900;
 margin-top: 5px;
+text-align: center;
+vertical-align: middle;
+}
+
+a:visited, a:link, a:active {
+color: white;
+text-decoration: none;
 }
