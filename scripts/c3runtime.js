@@ -3973,6 +3973,8 @@ self.C3_JsPropNameTable = [
 	{panel_rewards_menu: 0},
 	{credits: 0},
 	{burnHTML: 0},
+	{ucouldwin: 0},
+	{Text: 0},
 	{GoSpin: 0},
 	{money: 0},
 	{contractData: 0},
@@ -4121,6 +4123,11 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => (and("𝖲̷ ", (Math.round(((f0(n1.ExpObject(".amountNQT")) / 100000000) * 100)) / 100)) + "\n");
 		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => and("𝖲̷ ", (Math.round((f0(n1.ExpObject("balanceNQT")) / 100000000)) * 0.1));
+		},
 		() => -5,
 		() => "Spin",
 		() => 8,
@@ -4160,7 +4167,8 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() - 6);
-		}
+		},
+		() => "contractDataMenu"
 ];
 
 
