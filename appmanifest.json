@@ -1,7 +1,7 @@
 {
 	"name": "Wheel of SIGNA",
 	"short_name": "Wheel of SIGNA",
-	"description": "Win SIGNA with the spin of the wheel!",
+	"description": "Win SIGNA with a spin of the wheel!",
 	"start_url": "index.html",
 	"display": "fullscreen",
 	"orientation": "any",

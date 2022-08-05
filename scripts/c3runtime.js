@@ -3333,6 +3333,19 @@ e=>this._OnJobWorkerMessage(e)}catch(err){this._hadErrorCreatingWorker=true;this
 
 {
 self["C3_Shaders"] = {};
+self["C3_Shaders"]["pulse"] = {
+	glsl: "#ifdef GL_FRAGMENT_PRECISION_HIGH\n#define highmedp highp\n#else\n#define highmedp mediump\n#endif\nvarying mediump vec2 vTex;\nuniform lowp sampler2D samplerFront;\nuniform mediump vec2 srcStart;\nuniform mediump vec2 srcEnd;\nuniform lowp float intensity;\nuniform lowp float lighting;\nuniform mediump float frequency;\nuniform mediump float speed;\nuniform mediump float centerX;\nuniform mediump float centerY;\nuniform mediump vec2 pixelSize;\nuniform mediump float devicePixelRatio;\nuniform mediump float layerScale;\nuniform highmedp float seconds;\nvoid main(void)\n{\nmediump vec2 srcSize = srcEnd - srcStart;\nmediump vec2 tex = (vTex - srcStart) / srcSize;\nmediump vec2 res = 1.0 / pixelSize;\nmediump vec2 halfres = res / 2.0;\nmediump vec2 cPos = (tex - vec2(centerX, 1.0 - centerY)) * res;\nmediump float cLength = length(cPos);\nmediump vec2 uv = tex+(cPos/cLength)*sin(cLength/frequency/(devicePixelRatio*layerScale)-seconds*speed)/25.0;\ntex = mix(tex, uv, intensity);\ntex = clamp(tex, 0.0, 1.0);\ntex = tex * srcSize + srcStart;\nlowp vec4 front = texture2D(samplerFront, tex);\nlowp vec3 col = mix(front.rgb, front.rgb*50.0/cLength, lighting * intensity);\ngl_FragColor = vec4(col,front.a);\n}",
+	wgsl: "%%SAMPLERFRONT_BINDING%% var samplerFront : sampler;\n%%TEXTUREFRONT_BINDING%% var textureFront : texture_2d<f32>;\nstruct ShaderParams {\nintensity : f32,\nlighting : f32,\nspeed : f32,\nfrequency : f32,\ncenterX : f32,\ncenterY : f32\n};\n%%SHADERPARAMS_BINDING%% var<uniform> shaderParams : ShaderParams;\n%%C3PARAMS_STRUCT%%\n%%C3_UTILITY_FUNCTIONS%%\n%%FRAGMENTINPUT_STRUCT%%\n%%FRAGMENTOUTPUT_STRUCT%%\n@stage(fragment)\nfn main(input : FragmentInput) -> FragmentOutput\n{\nvar tex : vec2<f32> = c3_srcToNorm(input.fragUV);\nvar res : vec2<f32> = vec2<f32>(textureDimensions(textureFront));\nvar halfres : vec2<f32> = res / 2.0;\nvar cPos : vec2<f32> = (tex - vec2<f32>(shaderParams.centerX, 1.0 - shaderParams.centerY)) * res;\nvar cLength : f32 = length(cPos);\nvar uv : vec2<f32> = tex + (cPos / cLength) * sin(cLength / shaderParams.frequency / (c3Params.devicePixelRatio * c3Params.layerScale) - c3Params.seconds * shaderParams.speed) / 25.0;\ntex = mix(tex, uv, shaderParams.intensity);\ntex = c3_clamp2(tex, 0.0, 1.0);\ntex = c3_normToSrc(tex);\nvar front : vec4<f32> = textureSample(textureFront, samplerFront, tex);\nvar col : vec3<f32> = mix(front.rgb, front.rgb * 50.0 / cLength, shaderParams.lighting * shaderParams.intensity);\nvar output : FragmentOutput;\noutput.color = vec4<f32>(col, front.a);\nreturn output;\n}",
+	blendsBackground: false,
+	usesDepth: false,
+	extendBoxHorizontal: 50,
+	extendBoxVertical: 50,
+	crossSampling: false,
+	mustPreDraw: false,
+	preservesOpaqueness: false,
+	animated: true,
+	parameters: [["intensity",0,"percent"],["lighting",0,"percent"],["speed",0,"float"],["frequency",0,"float"],["centerX",0,"percent"],["centerY",0,"percent"]]
+};
 
 }
 
