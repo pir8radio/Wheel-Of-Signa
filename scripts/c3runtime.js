@@ -3944,6 +3944,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Function.Acts.CallFunction,
 		C3.Plugins.System.Cnds.Else,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
+		C3.Plugins.Browser.Acts.GoToURLWindow,
 		C3.Plugins.Function.Cnds.OnFunction,
 		C3.Plugins.Audio.Acts.SetSilent,
 		C3.Plugins.Audio.Cnds.IsSilent,
@@ -4005,6 +4006,7 @@ self.C3_JsPropNameTable = [
 	{btn_fullscrn: 0},
 	{Flash: 0},
 	{signa_added: 0},
+	{btn_explorer: 0},
 	{GoSpin: 0},
 	{money: 0},
 	{contractData: 0},
@@ -4189,6 +4191,8 @@ self.C3_ExpressionFuncs = [
 		() => 15,
 		() => "Edit and Sound",
 		() => "fullScreen",
+		() => "https://explorer.notallmine.net/address/973208016204479884",
+		() => "NewWindow",
 		() => "Sound",
 		p => {
 			const n0 = p._GetNode(0);
