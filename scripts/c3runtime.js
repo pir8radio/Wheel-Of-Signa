@@ -3877,15 +3877,6 @@ const i=VALID_MOVEMENTS.indexOf(m);if(i===-1)throw new Error("invalid movement")
 }
 
 {
-'use strict';{const C3=self.C3;C3.Behaviors.Flash=class FlashBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Behaviors.Flash.Type=class FlashType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}}}
-{const C3=self.C3;C3.Behaviors.Flash.Instance=class FlashInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);this._onTime=0;this._offTime=0;this._stage=0;this._stageTimeLeft=0;this._timeLeft=0;this._StartTicking()}Release(){super.Release()}SaveToJson(){return{"on":this._onTime,"off":this._offTime,"s":this._stage,"stl":this._stageTimeLeft,"tl":this._timeLeft}}LoadFromJson(o){this._onTime=o["on"];this._offTime=o["off"];this._stage=o["s"];this._stageTimeLeft=o["stl"];
-this._timeLeft=o["tl"]===null?Infinity:o["tl"]}Tick(){if(this._timeLeft<=0)return;const dt=this._runtime.GetDt(this._inst);this._timeLeft-=dt;if(this._timeLeft<=0){this._timeLeft=0;this._inst.GetWorldInfo().SetVisible(true);this._runtime.UpdateRender();return this.DebugTrigger(C3.Behaviors.Flash.Cnds.OnFlashEnded)}this._stageTimeLeft-=dt;if(this._stageTimeLeft<=0){if(this._stage===0){this._inst.GetWorldInfo().SetVisible(false);this._stage=1;this._stageTimeLeft+=this._offTime}else{this._inst.GetWorldInfo().SetVisible(true);
-this._stage=0;this._stageTimeLeft+=this._onTime}this._runtime.UpdateRender()}}GetDebuggerProperties(){const prefix="behaviors.flash.debugger";return[{title:"$"+this.GetBehaviorType().GetName(),properties:[{name:prefix+".on-time",value:this._onTime,onedit:v=>this._onTime=v},{name:prefix+".off-time",value:this._offTime,onedit:v=>this._offTime=v},{name:prefix+".is-flashing",value:this._timeLeft>0},{name:prefix+".time-left",value:this._timeLeft}]}]}}}
-{const C3=self.C3;C3.Behaviors.Flash.Cnds={IsFlashing(){return this._timeLeft>0},OnFlashEnded(){return true}}}{const C3=self.C3;C3.Behaviors.Flash.Acts={Flash(on,off,dur){this._onTime=on;this._offTime=off;this._stage=1;this._stageTimeLeft=off;this._timeLeft=dur;this._inst.GetWorldInfo().SetVisible(false);this._runtime.UpdateRender()},StopFlashing(){this._timeLeft=0;this._inst.GetWorldInfo().SetVisible(true);this._runtime.UpdateRender()}}}{const C3=self.C3;C3.Behaviors.Flash.Exps={}};
-
-}
-
-{
 const C3 = self.C3;
 self.C3_GetObjectRefTable = function () {
 	return [
@@ -3905,7 +3896,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.HTMLElement,
 		C3.Plugins.PlatformInfo,
 		C3.Behaviors.Sin,
-		C3.Behaviors.Flash,
 		C3.Plugins.System.Cnds.IsGroupActive,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.System.Cnds.PickAll,
@@ -3919,8 +3909,10 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Text.Acts.SetText,
 		C3.Plugins.System.Exps.float,
 		C3.Plugins.Json.Exps.Get,
-		C3.Behaviors.Flash.Acts.Flash,
+		C3.Plugins.Sprite.Acts.SetAnim,
 		C3.Plugins.System.Acts.Wait,
+		C3.Plugins.Sprite.Acts.StopAnim,
+		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.System.Cnds.Compare,
 		C3.Plugins.Text.Exps.Text,
 		C3.Plugins.Sprite.Acts.SetVisible,
@@ -3931,14 +3923,12 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Json.Cnds.ForEach,
 		C3.Plugins.Text.Acts.AppendText,
 		C3.Plugins.System.Cnds.CompareVar,
-		C3.Plugins.Sprite.Acts.SetAnim,
 		C3.Plugins.Sprite.Acts.SetAnimSpeed,
 		C3.Behaviors.Rotate.Acts.SetSpeed,
 		C3.Plugins.System.Exps.random,
 		C3.Plugins.System.Cnds.ForEach,
 		C3.Plugins.Text.Acts.SetInstanceVar,
 		C3.Plugins.Audio.Acts.StopAll,
-		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.System.Cnds.IsMobile,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.Function.Acts.CallFunction,
@@ -4004,7 +3994,6 @@ self.C3_JsPropNameTable = [
 	{ucouldwin: 0},
 	{Text: 0},
 	{btn_fullscrn: 0},
-	{Flash: 0},
 	{signa_added: 0},
 	{btn_explorer: 0},
 	{GoSpin: 0},
@@ -4130,8 +4119,9 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => and("𝖲̷ ", (Math.round(((f0(n1.ExpObject("balanceNQT")) / 100000000) * 1000)) / 1000));
 		},
-		() => 1.5,
-		() => 10,
+		() => "Blink",
+		() => 9,
+		() => 0,
 		() => "txsData",
 		() => "https://signawallet.notallmine.net/burst?requestType=getAccountTransactions&account=S-WHEE-K5B8-7VDV-29E2V&type=22&subtype=1&firstIndex=0&lastIndex=4",
 		() => "",
@@ -4148,7 +4138,7 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => (Math.round(((f0(n1.ExpObject("balanceNQT")) / 100000000) * 1000)) / 1000);
 		},
-		() => 0,
+		() => 10,
 		() => 1,
 		() => "transactions",
 		p => {
@@ -4171,6 +4161,7 @@ self.C3_ExpressionFuncs = [
 		},
 		() => 5,
 		() => 300,
+		() => 1.5,
 		() => 3,
 		() => 200,
 		() => 0.5,
@@ -4182,7 +4173,6 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpInstVar();
 		},
-		() => "Blink",
 		() => 0.75,
 		p => {
 			const n0 = p._GetNode(0);
