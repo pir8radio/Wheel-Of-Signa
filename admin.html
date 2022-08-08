@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helper buttons for Wheel of Signa</title>
+    <script src="https://cdn.jsdelivr.net/npm/@signumjs/core/dist/signumjs.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/@signumjs/wallets/dist/signumjs.wallets.min.js'></script>
+
+<script>
+    const Config = {
+        smartContractId: "973208016204479884",
+        assetId: "11955007191311588286",
+        appName: "WoS Admin",
+        networkName: "Signum"
+    }
+
+    const Global = {
+        server: undefined,
+        wallet: undefined,
+        walletResponse: undefined,
+        signumJSAPI: undefined
+    }
+
+    const Stats = {
+        runs: 0,
+        burnedAmount: 0,
+        lastPayouts: []
+    }
+
+    function updateDefaultNode(selectedNode) {
+        Global.server = selectedNode
+        Global.signumJSAPI = sig$.composeApi({
+            nodeHost: Global.server
+        });
+    }
+
+    function UnlinkAccount() {
+        Global.walletSubscription?.unlisten();
+        Global.wallet = undefined;
+        Global.walletResponse = undefined;
+        document.getElementById('rs_account').innerText = "None"
+    }
+
+    function updateLinkedAccount() {
+        document.getElementById('rs_account').innerText = idTOaccount(Global.walletResponse.accountId)
+    }
+
+
+    function errorCallback(message) {
+        document.getElementById('output').innerHTML = message.replace(/\n/g, "<br />");
+        alert('Oh no... An error has occurred.')
+    }
+    function successCallback(message) {
+        document.getElementById('output').innerHTML = message.replace(/\n/g, "<br />");
+        alert('Success!!! Wait 8 minutes and check your account.')
+    }
+
+    async function linkXT() {
+        if (Global.wallet === undefined) {
+            Global.wallet = new sig$wallets.GenericExtensionWallet();
+            try {
+                Global.walletResponse = await Global.wallet.connect({
+                    appName: Config.appName ,
+                    networkName: Config.networkName
+                })
+                updateDefaultNode(Global.walletResponse.currentNodeHost)
+                Global.walletSubscription = Global.walletResponse.listen({
+                    onAccountChanged: (newVal) => {
+                        Global.walletResponse.publicKey = newVal.accountPublicKey;
+                        Global.walletResponse.accountId = newVal.accountId;
+                        updateLinkedAccount();
+                    },
+                    onNetworkChanged: (newNetwork) => {
+                        if (newNetwork.networkName !== Config.networkName) {
+                            evtUnlinkAccount();
+                            return;
+                        }
+                        updateDefaultNode(newNetwork.networkHost)
+                    }
+                })
+                updateLinkedAccount();
+            } catch (err) {
+                UnlinkAccount()
+                errorCallback("Signum XT Wallet error:\n\n" + err.message)
+            }
+        }
+    }
+
+    async function play() {
+        if (Global.walletResponse === null || Global.walletResponse === undefined) {
+            UnlinkAccount()
+            errorCallback("Signum XT wallet extension not activated. To use this feature you need to install the extension and link your account at main page.")
+            return
+        }
+        if (!confirm(`You will send 0.52 Signa and 1 TMG to WoS contract ${idTOaccount(Config.smartContractId)}.`)) {
+            return
+        }
+
+        const parameters = {
+            asset: Config.assetId,
+            quantityQNT: "100",
+            amountNQT: "50000000",
+            publicKey: Global.walletResponse.publicKey,
+            recipient: Config.smartContractId,
+            feeNQT: "2000000",
+            deadline: "8",
+        }
+        try {
+            const Response = await Global.signumJSAPI.service.send('transferAsset', parameters)
+            const retObj = await Global.wallet.confirm(Response.unsignedTransactionBytes)
+            console.log(retObj)
+            successCallback(`Transaction broadcasted! Id: ${retObj.transactionId}`)
+        } catch(err) {
+            errorCallback(`Transaction failed.\n\n${err.message}`)
+        }
+    }
+
+    async function loadTMG() {
+        if (Global.walletResponse === null || Global.walletResponse === undefined) {
+            UnlinkAccount()
+            errorCallback("Signum XT wallet extension not activated. To use this feature you need to install the extension and link your account at main page.")
+            return
+        }
+        const strBalance = prompt("How much TMG?")
+        let numberBalance = Number(strBalance)
+        if (isNaN(numberBalance)) {
+            numberBalance = Number(strBalance.replace(',','.'))
+        }
+        if (isNaN(numberBalance) || numberBalance === 0) {
+            return
+        }
+        if (!confirm(`You will add ${numberBalance.toFixed(2)} TMG to WoS contract ${idTOaccount(Config.smartContractId)}.`)) {
+            return
+        }
+
+        const parameters = {
+            asset: Config.assetId,
+            quantityQNT: (numberBalance * 100).toFixed(0),
+            publicKey: Global.walletResponse.publicKey,
+            recipient: Config.smartContractId,
+            feeNQT: "2000000",
+            deadline: "8",
+        }
+        try {
+            const Response = await Global.signumJSAPI.service.send('transferAsset', parameters)
+            const retObj = await Global.wallet.confirm(Response.unsignedTransactionBytes)
+            console.log(retObj)
+            successCallback(`Transaction broadcasted! Id: ${retObj.transactionId}`)
+        } catch(err) {
+            errorCallback(`Transaction failed.\n\n${err.message}`)
+        }
+    }
+
+    async function loadSigna() {
+        if (Global.walletResponse === null || Global.walletResponse === undefined) {
+            UnlinkAccount()
+            errorCallback("Signum XT wallet extension not activated. To use this feature you need to install the extension and link your account at main page.")
+            return
+        }
+        const strBalance = prompt("How much Signa?")
+        let numberBalance = Number(strBalance)
+        if (isNaN(numberBalance)) {
+            numberBalance = Number(strBalance.replace(',','.'))
+        }
+        if (isNaN(numberBalance) || numberBalance < 0.5) {
+            return
+        }
+        if (!confirm(`You will add ${numberBalance} Signa to WoS contract ${idTOaccount(Config.smartContractId)}.`)) {
+            return
+        }
+
+        const parameters = {
+            amountNQT: (numberBalance*1E8).toFixed(0),
+            publicKey: Global.walletResponse.publicKey,
+            recipient: Config.smartContractId,
+            feeNQT: "2000000",
+            deadline: "8",
+        }
+        try {
+            const Response = await Global.signumJSAPI.service.send('sendMoney', parameters)
+            const retObj = await Global.wallet.confirm(Response.unsignedTransactionBytes)
+            console.log(retObj)
+            successCallback(`Transaction broadcasted! Id: ${retObj.transactionId}`)
+        } catch(err) {
+            errorCallback(`Transaction failed.\n\n${err.message}`)
+        }
+    }
+
+    async function changeLimit() {
+        if (Global.walletResponse === null || Global.walletResponse === undefined) {
+            UnlinkAccount()
+            errorCallback("Signum XT wallet extension not activated. To use this feature you need to install the extension and link your account at main page.")
+            return
+        }
+        const strBalance = prompt("Set new TMG limit to:")
+        let numberBalance = Number(strBalance)
+        if (isNaN(numberBalance)) {
+            numberBalance = Number(strBalance.replace(',','.'))
+        }
+        if (isNaN(numberBalance)) {
+            return
+        }
+        if (!confirm(`You will add 0.5 Signa and set new limit to ${numberBalance.toFixed(2)} TMG in WoS contract ${idTOaccount(Config.smartContractId)}. You must be the owner.`)) {
+            return
+        }
+
+        const parameters = {
+            amountNQT: "50000000",
+            publicKey: Global.walletResponse.publicKey,
+            recipient: Config.smartContractId,
+            message: `limit is ${(numberBalance * 100).toFixed(0)}`,
+            messageIsText: "true",
+            feeNQT: "2000000",
+            deadline: "8",
+        }
+        try {
+            const Response = await Global.signumJSAPI.service.send('sendMoney', parameters)
+            const retObj = await Global.wallet.confirm(Response.unsignedTransactionBytes)
+            console.log(retObj)
+            successCallback(`Transaction broadcasted! Id: ${retObj.transactionId}`)
+        } catch(err) {
+            errorCallback(`Transaction failed.\n\n${err.message}`)
+        }
+    }
+
+    
+    //Input id in unsigned long (BigInt)
+    //Output string with account address (Reed-Salomon encoded)
+    function idTOaccount(id) {
+        let gexp = [1, 2, 4, 8, 16, 5, 10, 20, 13, 26, 17, 7, 14, 28, 29, 31, 27, 19, 3, 6, 12, 24, 21, 15, 30, 25, 23, 11, 22, 9, 18, 1]
+        let glog = [0, 0, 1, 18, 2, 5, 19, 11, 3, 29, 6, 27, 20, 8, 12, 23, 4, 10, 30, 17, 7, 22, 28, 26, 21, 25, 9, 16, 13, 14, 24, 15]
+        let cwmap = [3, 2, 1, 0, 7, 6, 5, 4, 13, 14, 15, 16, 12, 8, 9, 10, 11]
+        let alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ".split("")
+        let base32alpha="0123456789abcdefghijklmnopqrstuv"
+        let base32Length = 13
+        let account = "S-"
+        let i;
+        function gmult(a, b) {
+            if (a == 0 || b == 0) {
+                return 0;
+            }
+            return gexp[ (glog[a] + glog[b]) % 31 ]
+        }
+        const base32=BigInt(id).toString(32).padStart(13,"0").split("")
+        var codeword=[]
+        for (i=0; i<base32Length; i++){
+            codeword.push( base32alpha.indexOf(base32[12-i]) );
+        }
+        var p = [0, 0, 0, 0]
+        for (i=base32Length-1; i>=0; i--) {
+            let fb = codeword[i] ^ p[3]
+            p[3] = p[2] ^ gmult(30, fb)
+            p[2] = p[1] ^ gmult(6, fb)
+            p[1] = p[0] ^ gmult(9, fb)
+            p[0] = gmult(17, fb)
+        }
+        codeword.push(p[0], p[1], p[2], p[3])
+        for (i=0; i<17; i++) {
+            account+=alphabet[codeword[cwmap[i]]]
+            if ((i & 3) == 3 && i < 13) {
+                account+="-"
+            }
+        }
+        return account
+    }
+
+window.onload = async function (){
+    await requestContractData();
+
+    document.getElementById('contract').innerText = "Address: " + idTOaccount(Config.smartContractId) + "\n" +
+        "Burned: " + Stats.burnedAmount + "\n" +
+        "PayoutN: " + Stats.lastPayouts[0] + "\n" +
+        "PayoutN-1: " + Stats.lastPayouts[1] + "\n" +
+        "PayoutN-2: " + Stats.lastPayouts[2] + "\n" +
+        "PayoutN-3: " + Stats.lastPayouts[3] + "\n" +
+        "PayoutN-4: " + Stats.lastPayouts[4] + "\n"    
+}
+
+async function requestContractData() {
+    function decodeMemory(hexstring){
+        const retObj = {
+            longs: [],
+            strings: [],
+        }
+        for (let i=0; i< hexstring.length; i+=16) {
+            let hexlong = hexstring.slice(i,i+16);
+            let txt = "";
+            let val = 0n;
+            let mult = 1n;
+            for (let j=0; j<16; j+=2) {
+                let byte = parseInt(hexlong.slice(j, j + 2), 16)
+                if (byte >= 32 && byte <= 126) {
+                    txt+=String.fromCharCode(byte);
+                }
+                val += mult*BigInt(byte);
+                mult *= 256n;
+            }
+            retObj.strings.push(txt);
+            retObj.longs.push(val);
+        }
+        return retObj;
+    }
+
+    let response, contractInfo
+    try {
+        response = await fetch(`https://europe.signum.network/burst?requestType=getATDetails&at=${Config.smartContractId}`)
+    } catch (error) {
+        console.log(error.message)
+        return;
+    }
+
+    contractInfo = await response.json();
+    if (contractInfo.machineData === undefined) {
+        return;
+    }
+
+    const Variables = decodeMemory(contractInfo.machineData);
+    Stats.runs = Number(Variables.longs[7])
+    Stats.burnedAmount = Number(Variables.longs[8])
+    for (let i = 0; i < 5; i++) {
+        Stats.lastPayouts.unshift(Number(Variables.longs[10 + ((Stats.runs + i) % 5)]))
+    }
+}
+
+</script>
+
+    </head>
+    <body>
+
+<!-- START OF BUTTON CODE -->
+<div>
+<button onclick="linkXT()">Link</button><br>
+<button onclick="loadSigna()">Load Signa</button><br>
+<button onclick="loadTMG()">Load TMG</button><br>
+<button onclick="changeLimit()">Change limit</button><br>
+
+    <button onclick="play()">Play</button><br>
+    <h3>Linked account</h3>
+    <output id="rs_account">None</output>
+    <h3>Contract details</h3>
+    <div id="contract"></div>
+    <h3>Status</h3>
+    <div id="output"></div>
+</div>
+
+</body>
+</html>
