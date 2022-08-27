@@ -3,7 +3,7 @@
 
 const scriptsInEvents = {
 
-		async MainEvent_Event19_Act1(runtime, localVars)
+		async MainEvent_Event20_Act1(runtime, localVars)
 		{
 			    const Config2 = {
 			        smartContractId: "973208016204479884",
