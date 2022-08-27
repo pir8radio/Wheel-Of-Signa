@@ -3901,6 +3901,10 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.PickAll,
 		C3.Plugins.Sprite.Cnds.IsOverlapping,
 		C3.Behaviors.Pin.Acts.Pin,
+		C3.Plugins.Audio.Cnds.IsSilent,
+		C3.Plugins.Sprite.Acts.SetAnimFrame,
+		C3.Plugins.System.Cnds.Else,
+		C3.Plugins.Browser.Cnds.IsFullscreen,
 		C3.Plugins.AJAX.Acts.Request,
 		C3.Plugins.AJAX.Cnds.OnComplete,
 		C3.Plugins.System.Acts.SetVar,
@@ -3912,7 +3916,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetAnim,
 		C3.Plugins.System.Acts.Wait,
 		C3.Plugins.Sprite.Acts.StopAnim,
-		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.System.Cnds.Compare,
 		C3.Plugins.Text.Exps.Text,
 		C3.Plugins.Sprite.Acts.SetVisible,
@@ -3922,6 +3925,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.PlatformInfo.Cnds.IsOnMobile,
 		C3.Plugins.Json.Cnds.ForEach,
 		C3.Plugins.Text.Acts.AppendText,
+		C3.ScriptsInEvents.MainEvent_Event19_Act1,
 		C3.Plugins.System.Cnds.CompareVar,
 		C3.Plugins.Sprite.Acts.SetAnimSpeed,
 		C3.Behaviors.Rotate.Acts.SetSpeed,
@@ -3932,18 +3936,17 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.IsMobile,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.Function.Acts.CallFunction,
-		C3.Plugins.System.Cnds.Else,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
 		C3.Plugins.Browser.Acts.GoToURLWindow,
 		C3.Plugins.Function.Cnds.OnFunction,
 		C3.Plugins.Audio.Acts.SetSilent,
-		C3.Plugins.Audio.Cnds.IsSilent,
-		C3.Plugins.Browser.Cnds.IsFullscreen,
 		C3.Plugins.Browser.Acts.CancelFullScreen,
 		C3.Plugins.Browser.Acts.RequestFullScreen,
+		C3.Plugins.Touch.Cnds.OnTouchObject,
+		C3.Plugins.System.Acts.GoToLayoutByName,
+		C3.Plugins.Mouse.Cnds.IsOverObject,
 		C3.Plugins.Sprite.Acts.SetY,
-		C3.Plugins.Sprite.Exps.Y,
-		C3.Plugins.System.Acts.GoToLayoutByName
+		C3.Plugins.Sprite.Exps.Y
 	];
 };
 self.C3_JsPropNameTable = [
@@ -3992,15 +3995,22 @@ self.C3_JsPropNameTable = [
 	{credits: 0},
 	{burnHTML: 0},
 	{ucouldwin: 0},
-	{Text: 0},
+	{couldWinText: 0},
 	{btn_fullscrn: 0},
 	{signa_added: 0},
 	{btn_explorer: 0},
+	{atm: 0},
+	{atm_image: 0},
+	{btn_back: 0},
+	{HTMLElement: 0},
+	{burntTMG: 0},
+	{speechATM: 0},
 	{GoSpin: 0},
 	{money: 0},
 	{contractData: 0},
 	{ResultsChangeCheck: 0},
 	{txsJSON: 0},
+	{userTMG: 0},
 	{prizeAux1: 0},
 	{prizeAux2: 0}
 ];
@@ -4104,6 +4114,8 @@ function or(l, r)
 
 self.C3_ExpressionFuncs = [
 		() => "Main",
+		() => 1,
+		() => 0,
 		() => "contractData",
 		() => "https://signawallet.notallmine.net/burst?requestType=getAccount&account=S-WHEE-K5B8-7VDV-29E2V",
 		p => {
@@ -4121,7 +4133,6 @@ self.C3_ExpressionFuncs = [
 		},
 		() => "Blink",
 		() => 9,
-		() => 0,
 		() => "txsData",
 		() => "https://signawallet.notallmine.net/burst?requestType=getAccountTransactions&account=S-WHEE-K5B8-7VDV-29E2V&type=22&subtype=1&firstIndex=0&lastIndex=4",
 		() => "",
@@ -4139,7 +4150,6 @@ self.C3_ExpressionFuncs = [
 			return () => (Math.round(((f0(n1.ExpObject("balanceNQT")) / 100000000) * 1000)) / 1000);
 		},
 		() => 10,
-		() => 1,
 		() => "transactions",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
@@ -4184,11 +4194,13 @@ self.C3_ExpressionFuncs = [
 		() => "https://explorer.notallmine.net/address/973208016204479884",
 		() => "NewWindow",
 		() => "Sound",
+		() => -7,
+		() => 0.2,
+		() => "ATM",
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() + 6);
 		},
-		() => 0.2,
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() - 6);
