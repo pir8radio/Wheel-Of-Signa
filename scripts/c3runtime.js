@@ -3576,20 +3576,6 @@ lastTapTime=-1E4;return"double-tap"}else{lastTapX=this._x;lastTapY=this._y;lastT
 }
 
 {
-'use strict';{const C3=self.C3;C3.Plugins.Function=class FunctionPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Plugins.Function.Type=class FunctionType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}
-{const C3=self.C3;class FuncStackEntry{constructor(){this.name="";this.retVal=0;this.params=[]}}C3.Plugins.Function.Instance=class FunctionInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst);this._isPreview=this._runtime.IsPreview();this._funcStackPtr=-1;this._funcStack=[];const invokeFromJs=(name,params)=>this._InvokeFromJS(name,params);self["c2_callFunction"]=invokeFromJs;self["c3_callFunction"]=invokeFromJs}Release(){super.Release()}Push(){const funcStack=this._funcStack;
-const i=++this._funcStackPtr;if(i===funcStack.length)funcStack.push(new FuncStackEntry);return funcStack[i]}Pop(){--this._funcStackPtr}GetCurrent(){const i=this._funcStackPtr;if(i<0)return null;return this._funcStack[i]}GetOneAbove(){const funcStack=this._funcStack;if(!funcStack.length)return null;const i=Math.min(this._funcStackPtr+1,funcStack.length-1);return funcStack[i]}_CallFunction(name,params){const fs=this.Push();fs.name=name.toLowerCase();fs.retVal=0;C3.shallowAssignArray(fs.params,params);
-const ran=this.FastTrigger(C3.Plugins.Function.Cnds.OnFunction,fs.name);if(this._isPreview&&!ran)console.warn(`[Construct] Function object: called function '${name}' but no event was triggered. Is the function call spelt incorrectly or no longer used?`);this.Pop()}*_DebugCallFunction(name,params){const fs=this.Push();fs.name=name.toLowerCase();fs.retVal=0;C3.shallowAssignArray(fs.params,params);const ran=yield*this.DebugFastTrigger(C3.Plugins.Function.Cnds.OnFunction,fs.name);if(this._isPreview&&
-!ran)console.warn(`[Construct] Function object: called function '${name}' but no event was triggered. Is the function call spelt incorrectly or no longer used?`);this.Pop()}_InvokeFromJS(name,params){const fs=this.Push();fs.name=name.toLowerCase();fs.retVal=0;fs.params=(params||[]).map(v=>{if(typeof v==="number"||typeof v==="string")return v;else if(typeof v==="boolean")return v?1:0;else return 0});this.FastTrigger(C3.Plugins.Function.Cnds.OnFunction,fs.name);this.Pop();return fs.retVal}}}
-{const C3=self.C3;C3.Plugins.Function.Cnds={OnFunction(name){return true},CompareParam(index,cmp,value){const fs=this.GetCurrent();if(!fs){if(this._isPreview)console.warn(`[Construct] Function object: used 'Compare parameter' condition when not in a function call`);return false}const params=fs.params;index=Math.floor(index);let paramValue=0;if(index<0||index>=params.length){if(this._isPreview)console.warn(`[Construct] Function object: in function '${fs.name}', compared parameter out of bounds (accessed index ${index} of ${params.length})`)}else paramValue=
-params[index];return C3.compare(paramValue,cmp,value)}}}{const C3=self.C3;C3.Plugins.Function.Acts={CallFunction(name,params){if(this._runtime.IsDebugging())return this._DebugCallFunction(name,params);else this._CallFunction(name,params)},SetReturnValue(value){const fs=this.GetCurrent();if(fs)fs.retVal=value;else if(this._isPreview)console.warn(`[Construct] Function object: used 'Set return value' when not in a function call`)},CallExpression(unused){}}}
-{const C3=self.C3;C3.Plugins.Function.Exps={ReturnValue(){const fs=this.GetOneAbove();return fs?fs.retVal:0},ParamCount(){const fs=this.GetCurrent();if(fs)return fs.params.length;else{if(this._isPreview)console.warn(`[Construct] Function object: used 'ParamCount' expression when not in a function call`);return 0}},Param(index){index=Math.floor(index);const fs=this.GetCurrent();if(fs){const params=fs.params;if(index>=0&&index<params.length)return params[index];else{if(this._isPreview)console.warn(`[Construct] Function object: in function '${fs.name}', accessed parameter out of bounds (accessed index ${index} of ${params.length})`);
-return 0}}else{if(this._isPreview)console.warn(`[Construct] Function object: used 'Param' expression when not in a function call`);return 0}},Call(name,...args){const fs=this.Push();fs.name=name.toLowerCase();fs.retVal=0;fs.params=args;const ran=this.FastTrigger(C3.Plugins.Function.Cnds.OnFunction,fs.name);if(this._isPreview&&!ran)console.warn(`[Construct] Function object: expression Function.Call("${name}" ...) was used, but no event was triggered. Is the function call spelt incorrectly or no longer used?`);
-this.Pop();return fs.retVal}}};
-
-}
-
-{
 'use strict';{const C3=self.C3;C3.Plugins.Text=class TextPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Plugins.Text.Type=class TextType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}LoadTextures(renderer){}ReleaseTextures(){}}}
 {const C3=self.C3;const C3X=self.C3X;const TEMP_COLOR_ARRAY=[0,0,0];const TEXT=0;const ENABLE_BBCODE=1;const FONT=2;const SIZE=3;const LINE_HEIGHT=4;const BOLD=5;const ITALIC=6;const COLOR=7;const HORIZONTAL_ALIGNMENT=8;const VERTICAL_ALIGNMENT=9;const WRAPPING=10;const INITIALLY_VISIBLE=11;const ORIGIN=12;const HORIZONTAL_ALIGNMENTS=["left","center","right"];const VERTICAL_ALIGNMENTS=["top","center","bottom"];const WORD_WRAP=0;const CHARACTER_WRAP=1;const tempRect=new C3.Rect;const tempQuad=new C3.Quad;
 const tempColor=new C3.Color;C3.Plugins.Text.Instance=class TextInstance extends C3.SDKWorldInstanceBase{constructor(inst,properties){super(inst);this._text="";this._enableBBcode=true;this._faceName="Arial";this._ptSize=12;this._lineHeightOffset=0;this._isBold=false;this._isItalic=false;this._color=C3.New(C3.Color);this._horizontalAlign=0;this._verticalAlign=0;this._wrapByWord=true;this._typewriterStartTime=-1;this._typewriterEndTime=-1;this._typewriterLength=0;this._rendererText=C3.New(C3.Gfx.RendererText,
@@ -3716,20 +3702,6 @@ value+inc)},SubtractFrom(str,dec){const value=this._GetValue(str);if(typeof valu
 {const C3=self.C3;C3.Plugins.Json.Exps={ToCompactString(){try{return JSON.stringify(this._data)}catch(err){return""}},ToBeautifiedString(){try{return JSON.stringify(this._data,null,4)}catch(err){return""}},Get(str){return this._GetSafeValue(str)},GetAsCompactString(str){const value=this._GetValue(str);return JSON.stringify(value)},GetAsBeautifiedString(str){const value=this._GetValue(str);return JSON.stringify(value,null,4)},Front(str){const parent=this._GetValue(str);if(Array.isArray(parent)){const value=
 parent[0];return this._ToSafeValue(value)}else return-1},Back(str){const parent=this._GetValue(str);if(Array.isArray(parent)){const value=parent.at(-1);return this._ToSafeValue(value)}else return-1},Type(str){return this._GetTypeOf(str)},ArraySize(str){const value=this._GetValue(str);if(Array.isArray(value))return value.length;else return-1},Path(){return this._path.map(seg=>seg.replace(/\./g,"\\.")).join(".")},CurrentKey(){return this._currentKey},CurrentValue(){return this._ToSafeValue(this._currentValue)},
 CurrentType(){return this._JSONTypeOf(this._currentValue)}}};
-
-}
-
-{
-'use strict';{const C3=self.C3;const DOM_COMPONENT_ID="button";C3.Plugins.Button=class ButtonPlugin extends C3.SDKDOMPluginBase{constructor(opts){super(opts,DOM_COMPONENT_ID);this.AddElementMessageHandler("click",(sdkInst,e)=>sdkInst._OnClick(e))}Release(){super.Release()}}}{const C3=self.C3;C3.Plugins.Button.Type=class ButtonType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}
-{const C3=self.C3;const C3X=self.C3X;const TYPE=0;const TEXT=1;const TOOLTIP=2;const INITIALLY_VISIBLE=3;const ENABLE=4;const AUTO_FONT_SIZE=5;const CHECKED=6;const ID=7;const CLASS_NAME=8;const DOM_COMPONENT_ID="button";C3.Plugins.Button.Instance=class ButtonInstance extends C3.SDKDOMInstanceBase{constructor(inst,properties){super(inst,DOM_COMPONENT_ID);this._text="OK";this._isCheckbox=false;this._isChecked=false;this._title="";this._id="";this._className="";this._isEnabled=true;this._autoFontSize=
-true;if(properties){this._isCheckbox=properties[TYPE]===1;this._text=properties[TEXT];this._title=properties[TOOLTIP];this.GetWorldInfo().SetVisible(properties[INITIALLY_VISIBLE]);this._isEnabled=properties[ENABLE];this._autoFontSize=properties[AUTO_FONT_SIZE];this._isChecked=properties[CHECKED];this._id=properties[ID];this._className=properties[CLASS_NAME]}this.CreateElement({"id":this._id,"className":this._className})}Release(){super.Release()}GetElementState(){return{"text":this._text,"isCheckbox":this._isCheckbox,
-"isChecked":this._isChecked,"title":this._title,"isVisible":this.GetWorldInfo().IsVisible(),"isEnabled":this._isEnabled}}async _OnClick(e){this._isChecked=e["isChecked"];this.DispatchScriptEvent("click",true);await this.TriggerAsync(C3.Plugins.Button.Cnds.OnClicked)}_SetText(text){if(this._text===text)return;this._text=text;this.UpdateElementState()}_GetText(){return this._text}_SetTooltip(title){if(this._title===title)return;this._title=title;this.UpdateElementState()}_GetTooltip(){return this._title}_SetEnabled(e){e=
-!!e;if(this._isEnabled===e)return;this._isEnabled=e;this.UpdateElementState()}_IsEnabled(){return this._isEnabled}_SetChecked(c){if(!this._isCheckbox)return;c=!!c;if(this._isChecked===c)return;this._isChecked=c;this.UpdateElementState()}_IsChecked(){return this._isChecked}Draw(renderer){}SaveToJson(){return{"text":this._text,"checked":this._isChecked,"title":this._title,"enabled":this._isEnabled}}LoadFromJson(o){this._text=o["text"];this._isChecked=o["checked"];this._title=o["title"];this._isEnabled=
-o["enabled"];this.UpdateElementState()}GetPropertyValueByIndex(index){switch(index){case TEXT:return this._text;case TOOLTIP:return this._title;case ENABLE:return this._isEnabled;case AUTO_FONT_SIZE:return this._autoFontSize;case CHECKED:return this._isChecked}}SetPropertyValueByIndex(index,value){switch(index){case TEXT:if(this._text===value)return;this._text=value;this.UpdateElementState();break;case TOOLTIP:if(this._title===value)return;this._title=value;this.UpdateElementState();break;case ENABLE:if(this._isEnabled===
-!!value)return;this._isEnabled=!!value;this.UpdateElementState();break;case AUTO_FONT_SIZE:this._autoFontSize=!!value;break;case CHECKED:if(this._isChecked===!!value)return;this._isChecked=!!value;this.UpdateElementState();break}}GetDebuggerProperties(){const Acts=C3.Plugins.Button.Acts;const prefix="plugins.button";return[{title:prefix+".name",properties:[{name:prefix+".properties.text.name",value:this._text,onedit:v=>this.CallAction(Acts.SetText,v)},{name:prefix+".properties.enabled.name",value:this._isEnabled,
-onedit:v=>this.CallAction(Acts.SetEnabled,v)},{name:prefix+".properties.checked.name",value:this._isChecked,onedit:v=>this.CallAction(Acts.SetChecked,v)}]}]}GetScriptInterfaceClass(){return self.IButtonInstance}};const map=new WeakMap;self.IButtonInstance=class IButtonInstance extends self.IDOMInstance{constructor(){super();map.set(this,self.IInstance._GetInitInst().GetSdkInstance())}set text(str){C3X.RequireString(str);map.get(this)._SetText(str)}get text(){return map.get(this)._GetText()}set tooltip(str){C3X.RequireString(str);
-map.get(this)._SetTooltip(str)}get tooltip(){return map.get(this)._GetTooltip()}set isEnabled(e){map.get(this)._SetEnabled(e)}get isEnabled(){return map.get(this)._IsEnabled()}set isChecked(c){map.get(this)._SetChecked(c)}get isChecked(){return map.get(this)._IsChecked()}}}{const C3=self.C3;C3.Plugins.Button.Cnds={OnClicked(){return true},IsChecked(){return this._isChecked},CompareText(str,caseSensitive){if(caseSensitive)return this._text===str;else return C3.equalsNoCase(this._text,str)}}}
-{const C3=self.C3;C3.Plugins.Button.Acts={SetText(text){this._SetText(text)},SetTooltip(title){this._SetTooltip(title)},SetChecked(c){this._SetChecked(c!==0)},ToggleChecked(){if(!this._isCheckbox)return;this._isChecked=!this._isChecked;this.UpdateElementState()}}}{const C3=self.C3;C3.Plugins.Button.Exps={Text(){return this._text}}};
 
 }
 
@@ -3884,14 +3856,12 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.Rotate,
 		C3.Plugins.Mouse,
 		C3.Plugins.Touch,
-		C3.Plugins.Function,
 		C3.Plugins.Text,
 		C3.Behaviors.Pin,
 		C3.Plugins.Audio,
 		C3.Plugins.AJAX,
 		C3.Plugins.Json,
 		C3.Behaviors.Fade,
-		C3.Plugins.Button,
 		C3.Plugins.Browser,
 		C3.Plugins.HTMLElement,
 		C3.Plugins.PlatformInfo,
@@ -3936,10 +3906,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Audio.Acts.StopAll,
 		C3.Plugins.System.Cnds.IsMobile,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
-		C3.Plugins.Function.Acts.CallFunction,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
 		C3.Plugins.Browser.Acts.GoToURLWindow,
-		C3.Plugins.Function.Cnds.OnFunction,
 		C3.Plugins.Audio.Acts.Stop,
 		C3.Plugins.Audio.Acts.SetSilent,
 		C3.Plugins.Browser.Acts.CancelFullScreen,
@@ -3958,7 +3926,6 @@ self.C3_JsPropNameTable = [
 	{arrow: 0},
 	{Mouse: 0},
 	{Touch: 0},
-	{Function: 0},
 	{Id: 0},
 	{prize: 0},
 	{Pin: 0},
@@ -3986,7 +3953,6 @@ self.C3_JsPropNameTable = [
 	{outOForder: 0},
 	{Fade: 0},
 	{moneybag: 0},
-	{Button: 0},
 	{Browser: 0},
 	{SpinHTML: 0},
 	{PlatformInfo: 0},
@@ -4194,11 +4160,8 @@ self.C3_ExpressionFuncs = [
 		},
 		() => 15,
 		() => "Edit and Sound",
-		() => "fullScreen",
 		() => "https://explorer.notallmine.net/address/973208016204479884",
 		() => "NewWindow",
-		() => "Sound",
-		() => "Music",
 		() => -8,
 		() => -7,
 		() => 0.2,
