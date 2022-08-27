@@ -3939,6 +3939,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
 		C3.Plugins.Browser.Acts.GoToURLWindow,
 		C3.Plugins.Function.Cnds.OnFunction,
+		C3.Plugins.Audio.Acts.Stop,
+		C3.Plugins.Audio.Cnds.IsTagPlaying,
 		C3.Plugins.Audio.Acts.SetSilent,
 		C3.Plugins.Browser.Acts.CancelFullScreen,
 		C3.Plugins.Browser.Acts.RequestFullScreen,
@@ -4005,6 +4007,7 @@ self.C3_JsPropNameTable = [
 	{HTMLElement: 0},
 	{burntTMG: 0},
 	{speechATM: 0},
+	{btn_music: 0},
 	{GoSpin: 0},
 	{money: 0},
 	{contractData: 0},
@@ -4194,9 +4197,13 @@ self.C3_ExpressionFuncs = [
 		() => "https://explorer.notallmine.net/address/973208016204479884",
 		() => "NewWindow",
 		() => "Sound",
+		() => "Music",
+		() => "music",
+		() => -8,
 		() => -7,
 		() => 0.2,
 		() => "ATM",
+		() => "contractDataMenu",
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() + 6);
@@ -4204,8 +4211,7 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() - 6);
-		},
-		() => "contractDataMenu"
+		}
 ];
 
 
