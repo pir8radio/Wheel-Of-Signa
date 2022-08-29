@@ -1,0 +1,56 @@
+#spin {
+font-size:2vw;
+color: white;
+font-family: Georgia, serif;
+font-weight: 900;
+padding: 10px 10px;
+border-radius: 15px;
+background-size: cover;
+background-color: #FFCC00;
+border: .5vh solid #CDA400;
+}
+
+#spin:active {
+background-color: #8A8A8A;
+}
+
+#output {
+color: white;
+font-family: Georgia, serif;
+font-size:1vw;
+font-weight: 900;
+margin-top: 5px;
+}
+
+#output2 {
+font-family: Georgia, serif;
+font-size:2.2vw;
+font-weight: 900;
+margin-top: 5px;
+text-align: center;
+vertical-align: middle;
+}
+
+#status {
+height:100%;
+overflow:auto;
+font-size:1vw;
+color: blue;
+font-family: 'Trebuchet MS', sans-serif;
+font-weight: normal;
+padding: 10px 10px;
+}
+
+#feedback {
+font-size:1vw;
+text-align: center;
+color: blue;
+font-family: 'Trebuchet MS', sans-serif;
+font-weight: normal;
+padding: 10px 10px;
+}
+
+a:visited, a:link, a:active {
+color: white;
+text-decoration: none;
+}

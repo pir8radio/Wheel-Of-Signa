@@ -62,3 +62,8 @@ html, body, canvas {
 }
 
 
+@font-face {
+	font-family: 'signum-symbol';
+	src: url('fonts/signum-symbol.ttf') format('truetype');
+}
+
