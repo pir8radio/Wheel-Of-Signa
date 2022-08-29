@@ -71,6 +71,11 @@ const scriptsInEvents = {
 			
 		},
 
+		async MainEvent_Event51_Act3(runtime, localVars)
+		{
+			sendTMG();
+		},
+
 		async AtmEvent_Event3_Act3(runtime, localVars)
 		{
 			confirm();
