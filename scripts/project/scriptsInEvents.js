@@ -3,7 +3,7 @@
 
 const scriptsInEvents = {
 
-	async MainEvent_Event20_Act1(runtime, localVars)
+	async MainEvent_Event21_Act1(runtime, localVars)
 	{
 		    const Config2 = {
 		        smartContractId: "973208016204479884",
@@ -71,7 +71,7 @@ const scriptsInEvents = {
 		
 	},
 
-	async MainEvent_Event51_Act3(runtime, localVars)
+	async MainEvent_Event58_Act3(runtime, localVars)
 	{
 		sendTMG();
 	},

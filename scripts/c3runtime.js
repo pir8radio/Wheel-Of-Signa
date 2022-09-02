@@ -3943,7 +3943,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.PlatformInfo.Cnds.IsOnMobile,
 		C3.Plugins.Json.Cnds.ForEach,
 		C3.Plugins.Text.Acts.AppendText,
-		C3.ScriptsInEvents.MainEvent_Event20_Act1,
+		C3.Plugins.Browser.Exps.ExecJS,
+		C3.ScriptsInEvents.MainEvent_Event21_Act1,
 		C3.Plugins.System.Cnds.CompareVar,
 		C3.Plugins.Sprite.Acts.SetAnimSpeed,
 		C3.Behaviors.Rotate.Acts.SetSpeed,
@@ -3951,6 +3952,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.ForEach,
 		C3.Plugins.Text.Acts.SetInstanceVar,
 		C3.Plugins.Audio.Acts.Stop,
+		C3.Plugins.System.Exps.find,
 		C3.Plugins.System.Cnds.IsMobile,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
@@ -3959,7 +3961,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Browser.Acts.CancelFullScreen,
 		C3.Plugins.Browser.Acts.RequestFullScreen,
 		C3.Plugins.Touch.Cnds.OnTouchObject,
-		C3.ScriptsInEvents.MainEvent_Event51_Act3,
+		C3.ScriptsInEvents.MainEvent_Event58_Act3,
 		C3.Plugins.System.Acts.GoToLayoutByName,
 		C3.Plugins.Mouse.Cnds.IsOverObject,
 		C3.Plugins.Sprite.Acts.SetY,
@@ -4038,6 +4040,7 @@ self.C3_JsPropNameTable = [
 	{btn_ATMaccept: 0},
 	{blanktext_link: 0},
 	{btn_spin: 0},
+	{seasonal_hat: 0},
 	{JSONcontract: 0},
 	{JSONtxs: 0},
 	{GoSpin: 0},
@@ -4046,6 +4049,7 @@ self.C3_JsPropNameTable = [
 	{ResultsChangeCheck: 0},
 	{txsJSON: 0},
 	{userTMG: 0},
+	{dateTime: 0},
 	{prizeAux1: 0},
 	{prizeAux2: 0}
 ];
@@ -4197,6 +4201,10 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => and("[font=Signum-Symbol]S[/font] ", (Math.round((f0(n1.ExpObject("balanceNQT")) / 100000000)) * 0.1));
 		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => f0("Date()");
+		},
 		() => -5,
 		() => "SpinSound",
 		() => "Spin",
@@ -4226,6 +4234,38 @@ self.C3_ExpressionFuncs = [
 			return () => and("𝖲̷ ", n0.ExpInstVar());
 		},
 		() => 15,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const v1 = p._GetNode(1).GetVar();
+			return () => f0(v1.GetValue(), "JAN 01");
+		},
+		() => -1,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const v1 = p._GetNode(1).GetVar();
+			return () => f0(v1.GetValue(), "FEB 14");
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const v1 = p._GetNode(1).GetVar();
+			return () => f0(v1.GetValue(), "MAR 17");
+		},
+		() => 6,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const v1 = p._GetNode(1).GetVar();
+			return () => f0(v1.GetValue(), "OCT 31");
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const v1 = p._GetNode(1).GetVar();
+			return () => f0(v1.GetValue(), "DEC 25");
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const v1 = p._GetNode(1).GetVar();
+			return () => f0(v1.GetValue(), "DEC 31");
+		},
 		() => "Edit and Sound",
 		() => "https://explorer.notallmine.net/address/973208016204479884",
 		() => "NewWindow",
