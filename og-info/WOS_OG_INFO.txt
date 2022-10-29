@@ -1,6 +1,6 @@
-<meta property="og:title" content=Wheel of SIGNA Game>
-<meta property="og:site_name" content=Wheel of SIGNA>
+<meta property="og:title" content="Wheel of SIGNA Game">
+<meta property="og:site_name" content="Wheel of SIGNA">
 <meta property="og:url" content="">
-<meta property="og:description" content=Win SIGNA with a spin of the wheel!>
-<meta property="og:type" content=website>
-<meta property="og:image" content=https://raw.githubusercontent.com/pir8radio/Wheel-Of-Signa/main/og-info/wos-screenshot.jpg>
+<meta property="og:description" content="Win SIGNA with a spin of the wheel!">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://raw.githubusercontent.com/pir8radio/Wheel-Of-Signa/main/og-info/wos-screenshot.gif">
