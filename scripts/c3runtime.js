@@ -4318,7 +4318,6 @@ self.C3_ExpressionFuncs = [
 		() => 0.2,
 		() => "ATM",
 		() => "contractDataMenu",
-		() => "https://signawallet.notallmine.net/burst?requestType=getAccount&account=S-WHEE-K5B8-7VDV-29E2V",
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() + 6);
@@ -4327,7 +4326,7 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() - 6);
 		},
-		() => "Swap SIGNA for TMG at the current TMG liquidity pool prices. Select how much TMG you would like and the exchange rate will be shown below.",
+		() => "Swap SIGNA for TMG at the current TMG liquidity pool prices.\nSelect how much TMG you would like and the exchange rate will be shown below.",
 		() => "https://deleterium.info/tmg-pool/",
 		() => 20,
 		() => 80
