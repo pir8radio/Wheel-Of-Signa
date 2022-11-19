@@ -4195,7 +4195,7 @@ self.C3_ExpressionFuncs = [
 		() => 1,
 		() => 0,
 		() => "contractData",
-		() => "https://signawallet.notallmine.net/burst?requestType=getAccount&account=S-WHEE-K5B8-7VDV-29E2V",
+		() => "https://signawallet.notallmine.net/api?requestType=getAccount&account=S-WHEE-K5B8-7VDV-29E2V",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0();
@@ -4219,7 +4219,7 @@ self.C3_ExpressionFuncs = [
 			return () => Math.round((f0(n1.ExpObject("quantityBurntQNT")) / 100));
 		},
 		() => "txsData",
-		() => "https://signawallet.notallmine.net/burst?requestType=getAccountTransactions&account=S-WHEE-K5B8-7VDV-29E2V&type=22&subtype=1&firstIndex=0&lastIndex=4",
+		() => "https://signawallet.notallmine.net/api?requestType=getAccountTransactions&account=S-WHEE-K5B8-7VDV-29E2V&type=22&subtype=1&firstIndex=0&lastIndex=4",
 		() => "",
 		() => 30,
 		() => "EMPTY",
@@ -4318,6 +4318,7 @@ self.C3_ExpressionFuncs = [
 		() => 0.2,
 		() => "ATM",
 		() => "contractDataMenu",
+		() => "https://signawallet.notallmine.net/burst?requestType=getAccount&account=S-WHEE-K5B8-7VDV-29E2V",
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() + 6);
