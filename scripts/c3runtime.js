@@ -3781,6 +3781,24 @@ SetWebFont(familyName,cssUrl){console.warn("[Text] 'Set web font' action is depr
 }
 
 {
+'use strict';{const C3=self.C3;const DOM_COMPONENT_ID="text-input";C3.Plugins.TextBox=class TextInputPlugin extends C3.SDKDOMPluginBase{constructor(opts){super(opts,DOM_COMPONENT_ID);this.AddElementMessageHandler("click",(sdkInst,e)=>sdkInst._OnClick(e));this.AddElementMessageHandler("dblclick",(sdkInst,e)=>sdkInst._OnDoubleClick(e));this.AddElementMessageHandler("change",(sdkInst,e)=>sdkInst._OnChange(e))}Release(){super.Release()}}}{const C3=self.C3;C3.Plugins.TextBox.Type=class TextInputType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}
+{const C3=self.C3;const C3X=self.C3X;const TEXT=0;const PLACEHOLDER=1;const TOOLTIP=2;const INITIALLY_VISIBLE=3;const ENABLE=4;const READ_ONLY=5;const SPELL_CHECK=6;const TYPE=7;const AUTO_FONT_SIZE=8;const ID=9;const CLASS_NAME=10;const DOM_COMPONENT_ID="text-input";const elemTypes=["text","password","email","number","tel","url","textarea","search"];C3.Plugins.TextBox.Instance=class TextInputInstance extends C3.SDKDOMInstanceBase{constructor(inst,properties){super(inst,DOM_COMPONENT_ID);this._text=
+"";this._placeholder="";this._title="";this._isEnabled=true;this._isReadOnly=false;this._spellCheck=false;this._type="text";this._autoFontSize=true;this._maxLength=-1;this._id="";this._className="";if(properties){this._text=properties[TEXT];this._placeholder=properties[PLACEHOLDER];this._title=properties[TOOLTIP];this.GetWorldInfo().SetVisible(properties[INITIALLY_VISIBLE]);this._isEnabled=properties[ENABLE];this._isReadOnly=properties[READ_ONLY];this._spellCheck=properties[SPELL_CHECK];this._type=
+elemTypes[properties[TYPE]];this._autoFontSize=properties[AUTO_FONT_SIZE];this._id=properties[ID];this._className=properties[CLASS_NAME]}this.CreateElement({"type":this._type,"id":this._id,"className":this._className})}Release(){super.Release()}GetElementState(){return{"text":this._text,"placeholder":this._placeholder,"title":this._title,"isEnabled":this._isEnabled,"isReadOnly":this._isReadOnly,"spellCheck":this._spellCheck,"maxLength":this._maxLength}}async _OnClick(e){this.DispatchScriptEvent("click",
+true);await this.TriggerAsync(C3.Plugins.TextBox.Cnds.OnClicked)}async _OnDoubleClick(e){this.DispatchScriptEvent("dblclick",true);await this.TriggerAsync(C3.Plugins.TextBox.Cnds.OnDoubleClicked)}async _OnChange(e){this._text=e["text"];this.DispatchScriptEvent("change",true);await this.TriggerAsync(C3.Plugins.TextBox.Cnds.OnTextChanged)}_SetText(text){if(this._text===text)return;this._text=text;this.UpdateElementState()}_GetText(){return this._text}_SetPlaceholder(placeholder){if(this._placeholder===
+placeholder)return;this._placeholder=placeholder;this.UpdateElementState()}_GetPlaceholder(){return this._placeholder}_SetTooltip(title){if(this._title===title)return;this._title=title;this.UpdateElementState()}_GetTooltip(){return this._title}_SetEnabled(e){e=!!e;if(this._isEnabled===e)return;this._isEnabled=e;this.UpdateElementState()}_IsEnabled(){return this._isEnabled}_SetReadOnly(r){r=!!r;if(this._isReadOnly===r)return;this._isReadOnly=r;this.UpdateElementState()}_IsReadOnly(){return this._isReadOnly}_SetMaxLength(l){l=
+Math.max(+l,-1);if(this._maxLength===l)return;this._maxLength=l;this.UpdateElementState()}_GetMaxLength(){return this._maxLength}_ScrollToBottom(){Promise.resolve().then(()=>this.PostToDOMElement("scroll-to-bottom"))}Draw(renderer){}SaveToJson(){return{"t":this._text,"p":this._placeholder,"ti":this._title,"e":this._isEnabled,"r":this._isReadOnly,"sp":this._spellCheck,"ml":this._maxLength,"type":this._type,"id":this._id}}LoadFromJson(o){this._text=o["t"];this._placeholder=o["p"];this._title=o["ti"];
+this._isEnabled=o["e"];this._isReadOnly=o["r"];this._spellCheck=o["sp"];this._maxLength=o.hasOwnProperty("ml")?o["ml"]:-1;this._type=o["type"];this._id=o["id"];this.UpdateElementState()}GetPropertyValueByIndex(index){switch(index){case TEXT:return this._text;case PLACEHOLDER:return this._placeholder;case TOOLTIP:return this._title;case ENABLE:return this._isEnabled;case READ_ONLY:return this._isReadOnly;case SPELL_CHECK:return this._spellCheck;case AUTO_FONT_SIZE:return this._autoFontSize}}SetPropertyValueByIndex(index,
+value){switch(index){case TEXT:if(this._text===value)return;this._text=value;this.UpdateElementState();break;case PLACEHOLDER:if(this._placeholder===value)return;this._placeholder=value;this.UpdateElementState();break;case TOOLTIP:if(this._title===value)return;this._title=value;this.UpdateElementState();break;case ENABLE:if(this._isEnabled===!!value)return;this._isEnabled=!!value;this.UpdateElementState();break;case READ_ONLY:if(this._isReadOnly===!!value)return;this._isReadOnly=!!value;this.UpdateElementState();
+break;case SPELL_CHECK:if(this._spellCheck===!!value)return;this._spellCheck=!!value;this.UpdateElementState();break;case AUTO_FONT_SIZE:this._autoFontSize=!!value;break}}GetDebuggerProperties(){const Acts=C3.Plugins.TextBox.Acts;const prefix="plugins.textbox";return[{title:prefix+".name",properties:[{name:prefix+".properties.text.name",value:this._text,onedit:v=>this.CallAction(Acts.SetText,v)},{name:prefix+".properties.enabled.name",value:this._isEnabled,onedit:v=>this.CallAction(Acts.SetEnabled,
+v)},{name:prefix+".properties.read-only.name",value:this._isReadOnly,onedit:v=>this.CallAction(Acts.SetReadOnly,v)}]}]}GetScriptInterfaceClass(){return self.ITextInputInstance}};const map=new WeakMap;self.ITextInputInstance=class ITextInputInstance extends self.IDOMInstance{constructor(){super();map.set(this,self.IInstance._GetInitInst().GetSdkInstance())}set text(str){C3X.RequireString(str);map.get(this)._SetText(str)}get text(){return map.get(this)._GetText()}set placeholder(str){C3X.RequireString(str);
+map.get(this)._SetPlaceholder(str)}get placeholder(){return map.get(this)._GetPlaceholder()}set tooltip(str){C3X.RequireString(str);map.get(this)._SetTooltip(str)}get tooltip(){return map.get(this)._GetTooltip()}set isEnabled(e){map.get(this)._SetEnabled(e)}get isEnabled(){return map.get(this)._IsEnabled()}set isReadOnly(r){map.get(this)._SetReadOnly(r)}get isReadOnly(){return map.get(this)._IsReadOnly()}set maxLength(l){C3X.RequireFiniteNumber(l);map.get(this)._SetMaxLength(l)}get maxLength(){return map.get(this)._GetMaxLength()}scrollToBottom(){map.get(this)._ScrollToBottom()}}}
+{const C3=self.C3;C3.Plugins.TextBox.Cnds={CompareText(text,case_){if(case_===0)return C3.equalsNoCase(this._text,text);else return this._text===text},OnTextChanged(){return true},OnClicked(){return true},OnDoubleClicked(){return true}}}
+{const C3=self.C3;C3.Plugins.TextBox.Acts={SetText(param){this._SetText(param.toString())},AppendText(param){if(param==="")return;this._SetText(this._GetText()+param)},SetPlaceholder(placeholder){this._SetPlaceholder(placeholder)},SetTooltip(title){this._SetTooltip(title)},SetReadOnly(r){this._SetReadOnly(r===0)},ScrollToBottom(){this._ScrollToBottom()},SetMaxLength(l){this._SetMaxLength(l)}}}{const C3=self.C3;C3.Plugins.TextBox.Exps={Text(){return this._GetText()},MaxLength(){return this._GetMaxLength()}}};
+
+}
+
+{
 'use strict';{const C3=self.C3;C3.Plugins.Sprite=class SpritePlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}
 {const C3=self.C3;const spawnPickStack=[];C3.Plugins.Sprite.Type=class SpriteType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass);this._animations=objectClass.GetAnimations()}Release(){C3.clearArray(this._animations);super.Release()}OnCreate(){for(const a of this._animations)a.LoadAllAssets(this._runtime)}LoadTextures(renderer){const opts={sampling:this._runtime.GetSampling()};return Promise.all(this._animations.map(a=>a.LoadAllTextures(renderer,opts)))}ReleaseTextures(){for(const a of this._animations)a.ReleaseAllTextures()}OnDynamicTextureLoadComplete(){this._UpdateAllCurrentTexture()}_UpdateAllCurrentTexture(){for(const inst of this._objectClass.instancesIncludingPendingCreate())inst.GetSdkInstance()._UpdateCurrentTexture()}FinishCondition(doPick){C3.Plugins.Sprite.FinishCollisionCondition(this,
 doPick)}BeforeRunAction(method){spawnPickStack.push({objectClass:null,createHierarchy:false,instances:[]})}_SpawnPickInstance(objectClass,inst,createHierarchy){const entry=spawnPickStack.at(-1);entry.objectClass=objectClass;entry.createHierarchy=createHierarchy;entry.instances.push(inst)}AfterRunAction(method){const entry=spawnPickStack.pop();const objectClass=entry.objectClass;const createHierarchy=entry.createHierarchy;if(!objectClass)return;const pickMap=new Map;for(const inst of entry.instances)inst.CollectInstancesToPick(pickMap,
@@ -3946,6 +3964,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.HTMLElement,
 		C3.Plugins.Text,
 		C3.Behaviors.Pin,
+		C3.Plugins.TextBox,
 		C3.Plugins.Sprite,
 		C3.Behaviors.Fade,
 		C3.Behaviors.Sin,
@@ -4037,6 +4056,7 @@ self.C3_JsPropNameTable = [
 	{ucouldwin: 0},
 	{ATMtext: 0},
 	{ATMtextTypeWriter: 0},
+	{TextInput: 0},
 	{arrow: 0},
 	{atm: 0},
 	{atm_image: 0},
@@ -4077,6 +4097,8 @@ self.C3_JsPropNameTable = [
 	{blanktext_link: 0},
 	{btn_spin: 0},
 	{seasonal_hat: 0},
+	{btn_donate: 0},
+	{donate_image: 0},
 	{JSONcontract: 0},
 	{JSONtxs: 0},
 	{JSONtoken: 0},
@@ -4317,6 +4339,7 @@ self.C3_ExpressionFuncs = [
 		() => -7,
 		() => 0.2,
 		() => "ATM",
+		() => "Donate",
 		() => "contractDataMenu",
 		p => {
 			const n0 = p._GetNode(0);
