@@ -1,1 +1,1 @@
-This is just a GUI front-end to a crypto game I made as a proof-of-concept.   The actual game is located here: https://wos.notallmine.net
+This is just a GUI front-end to a crypto game I made as a proof-of-concept.   The actual game link is in the about section.   This game uses an on-chain Signum contract to do all of the gaming so it can't be cheated client side.  The GUI is only a display and easy way to submit info to the gaming contract. 
